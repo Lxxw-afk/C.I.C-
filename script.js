@@ -134,17 +134,18 @@ function renderEvidence() {
     circle.setAttribute("r", item.r);
     circle.setAttribute("class", "evidence-node");
     circle.setAttribute("data-id", item.id);
+    circle.setAttribute("pointer-events", "all");
 
     if (state.foundEvidenceIds.includes(item.id)) {
       circle.classList.add("found");
     }
 
-    circle.addEventListener("click", (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      collectEvidence(item.id);
-    });
-
+   circle.addEventListener("click", (event) => {
+  event.preventDefault();
+  event.stopPropagation();
+  alert("clic sur " + item.name);
+  collectEvidence(item.id);
+});
     sceneSvg.appendChild(circle);
   });
 }
