@@ -31,10 +31,6 @@ body {
   overflow: hidden;
 }
 
-.hidden {
-  display: none !important;
-}
-
 .app {
   display: grid;
   grid-template-columns: 1fr 360px;
@@ -77,7 +73,7 @@ body {
   padding: 10px 14px;
   font-weight: 800;
   cursor: pointer;
-  transition: transform 0.15s ease, opacity 0.15s ease, filter 0.15s ease;
+  transition: transform 0.15s ease;
 }
 
 .btn:hover {
@@ -101,12 +97,12 @@ body {
 .scene {
   position: relative;
   width: min(1200px, calc(100vw - 420px));
-  aspect-ratio: 768 / 512;
+  aspect-ratio: 16 / 9;
   border-radius: 26px;
   overflow: hidden;
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
-  background-image: url("images/salon.jpg");
+  background-image: url("images/fond-scene.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -121,17 +117,17 @@ body {
 }
 
 .scene-darken {
-  background: rgba(0, 0, 0, 0.14);
+  background: rgba(0, 0, 0, 0.12);
 }
 
 .scene-vignette {
-  background: radial-gradient(circle at center, transparent 50%, rgba(0,0,0,0.34) 100%);
+  background: radial-gradient(circle at center, transparent 55%, rgba(0,0,0,0.28) 100%);
 }
 
 .scene-light {
   background:
-    radial-gradient(circle at 42% 20%, rgba(255,255,255,0.11), transparent 18%),
-    radial-gradient(circle at 54% 52%, rgba(255,255,255,0.04), transparent 20%);
+    radial-gradient(circle at 42% 20%, rgba(255,255,255,0.09), transparent 18%),
+    radial-gradient(circle at 54% 52%, rgba(255,255,255,0.03), transparent 20%);
   mix-blend-mode: screen;
 }
 
@@ -163,143 +159,29 @@ body {
   backdrop-filter: blur(8px);
 }
 
-/* Corps au sol */
-.body-image {
-  position: absolute;
-  left: 50.8%;
-  top: 63.8%;
-  width: 16.5%;
-  transform: translate(-50%, -50%) rotate(-8deg);
-  z-index: 2;
-  pointer-events: none;
-  opacity: 0.96;
-  filter: drop-shadow(0 10px 14px rgba(0,0,0,0.35));
-}
-
-/* Flaques de sang */
-.blood-pool {
-  position: absolute;
-  z-index: 2;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(112,0,0,0.78), rgba(62,0,0,0.56));
-  filter: blur(1.2px);
-  pointer-events: none;
-}
-
-.blood-main {
-  left: 55.8%;
-  top: 69.8%;
-  width: 8.8%;
-  height: 3.6%;
-  transform: rotate(-8deg);
-}
-
-.blood-side {
-  left: 59.8%;
-  top: 67.8%;
-  width: 2.1%;
-  height: 1.2%;
-}
-
 .evidence-layer {
   position: absolute;
   inset: 0;
   z-index: 5;
 }
 
-.evidence {
+/* zones cliquables invisibles */
+.evidence-hotspot {
   position: absolute;
-  cursor: pointer;
-  transition: transform 0.18s ease, opacity 0.2s ease, filter 0.18s ease;
-  filter: drop-shadow(0 0 4px rgba(0,0,0,0.35));
-}
-
-.evidence:hover {
-  transform: scale(1.08);
-  filter: brightness(1.08) drop-shadow(0 0 6px rgba(255,255,255,0.08));
-}
-
-.evidence.found {
-  opacity: 0.16;
-  pointer-events: none;
-}
-
-.evidence-blood {
-  width: 2.6%;
-  height: 1.8%;
-  border-radius: 43% 57% 61% 39% / 54% 39% 61% 46%;
-  background: radial-gradient(circle at 45% 45%, rgba(108,0,0,0.72), rgba(60,0,0,0.50));
-  opacity: 0.62;
-  transform: rotate(-15deg);
-}
-
-.evidence-casing {
-  width: 1.8%;
-  height: 0.8%;
-  border-radius: 8px;
-  background: linear-gradient(90deg, #8f6a22 0%, #c9aa62 50%, #906826 100%);
-  opacity: 0.58;
-  transform: rotate(22deg);
-}
-
-.evidence-bullet {
-  width: 2%;
-  height: 1%;
-  border-radius: 10px 50% 50% 10px;
-  background: linear-gradient(90deg, #736660 0%, #aea19b 50%, #655853 100%);
-  opacity: 0.5;
-  transform: rotate(-28deg);
-}
-
-.evidence-phone {
-  width: 2.1%;
-  height: 4.4%;
-  border-radius: 4px;
-  background: linear-gradient(180deg, #12151a, #263241);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
-  opacity: 0.52;
-  transform: rotate(8deg);
-}
-
-.evidence-knife {
-  width: 3.4%;
-  height: 1.1%;
-  border-radius: 8px;
-  background: linear-gradient(90deg, #4d3322 0 32%, #aab4be 32% 100%);
-  opacity: 0.42;
-  transform: rotate(13deg);
-}
-
-.evidence-gun {
-  width: 4.6%;
-  height: 2.3%;
-  border-radius: 4px;
-  background: linear-gradient(180deg, #1a1d22, #343a44);
-  clip-path: polygon(0 35%, 58% 35%, 66% 0, 86% 0, 100% 22%, 100% 46%, 70% 46%, 72% 68%, 58% 100%, 42% 100%, 46% 58%, 0 58%);
-  opacity: 0.9;
-  transform: rotate(8deg);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
-}
-
-.evidence-bloody-bullet {
-  width: 2.2%;
-  height: 1.1%;
-  border-radius: 10px 50% 50% 10px;
-  background: linear-gradient(90deg, #6e615c 0%, #b6a59d 58%, #61534f 100%);
-  opacity: 0.85;
-  transform: rotate(-18deg);
-}
-
-.evidence-bloody-bullet::after {
-  content: "";
-  position: absolute;
-  right: -10%;
-  top: -20%;
-  width: 55%;
-  height: 90%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(120,0,0,0.88), rgba(70,0,0,0.55));
-  filter: blur(0.5px);
+  cursor: pointer;
+  background: rgba(255,255,255,0.001);
+  transition: box-shadow 0.15s ease, transform 0.15s ease, opacity 0.2s ease;
+}
+
+.evidence-hotspot:hover {
+  box-shadow: 0 0 0 2px rgba(255, 216, 106, 0.45);
+  transform: scale(1.03);
+}
+
+.evidence-hotspot.found {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .sidebar {
@@ -446,8 +328,8 @@ body {
 }
 
 .tablet {
-  width: min(1080px, 100%);
-  min-height: 620px;
+  width: min(980px, 100%);
+  min-height: 560px;
   background: linear-gradient(180deg, #111a28 0%, #0a111b 100%);
   border: 14px solid #1a2430;
   border-radius: 28px;
@@ -475,7 +357,7 @@ body {
   grid-template-columns: 290px 1fr;
   gap: 18px;
   padding: 22px;
-  min-height: 620px;
+  min-height: 560px;
 }
 
 .tablet-left,
@@ -529,140 +411,6 @@ body {
   gap: 10px;
   flex-wrap: wrap;
   margin-bottom: 14px;
-}
-
-.analysis-visual {
-  position: relative;
-  margin-top: 14px;
-  width: 100%;
-  border-radius: 18px;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.06);
-  background: rgba(0,0,0,0.25);
-}
-
-.analysis-template-image {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.analysis-overlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  color: #eef4fb;
-  font-family: Arial, sans-serif;
-}
-
-/* Masques pour cacher le texte déjà intégré dans tes images */
-.mask {
-  position: absolute;
-  background: rgba(4, 8, 20, 0.92);
-  border-radius: 6px;
-  filter: blur(0.2px);
-}
-
-/* SANG */
-.blood-mask-name { left: 79.5%; top: 15.4%; width: 16%; height: 10.4%; }
-.blood-mask-name-secondary { left: 79.5%; top: 23.3%; width: 16%; height: 6.5%; }
-.blood-mask-dob { left: 10.3%; top: 15.1%; width: 11%; height: 9.5%; }
-.blood-mask-sex { left: 10.8%; top: 43%; width: 10%; height: 8.5%; }
-.blood-mask-group { left: 10.6%; top: 66.4%; width: 10%; height: 8.5%; }
-.blood-mask-country { left: 79%; top: 67%; width: 9%; height: 7.6%; }
-.blood-mask-fingerprint { left: 82%; top: 43.4%; width: 13.5%; height: 8.5%; }
-
-.blood-name-value {
-  left: 80.2%;
-  top: 18%;
-  font-size: 1.65%;
-  color: #dfe9f5;
-  max-width: 14%;
-  text-align: left;
-  line-height: 1.25;
-}
-
-.blood-name-secondary-value {
-  left: 80.2%;
-  top: 25.2%;
-  font-size: 1.55%;
-  color: #b9c8da;
-  max-width: 14%;
-  text-align: left;
-  line-height: 1.25;
-}
-
-.blood-dob-value {
-  left: 10.8%;
-  top: 20.2%;
-  font-size: 1.6%;
-  color: #dfe9f5;
-}
-
-.blood-sex-value {
-  left: 13.1%;
-  top: 48%;
-  font-size: 1.6%;
-  color: #dfe9f5;
-}
-
-.blood-group-value {
-  left: 11.4%;
-  top: 71.1%;
-  font-size: 1.6%;
-  color: #dfe9f5;
-}
-
-.blood-country-value {
-  left: 79.8%;
-  top: 71.4%;
-  font-size: 1.6%;
-  color: #dfe9f5;
-}
-
-.blood-fingerprint-value {
-  left: 82.8%;
-  top: 48%;
-  font-size: 1.45%;
-  color: #dfe9f5;
-  max-width: 12.5%;
-  word-break: break-word;
-  line-height: 1.15;
-}
-
-/* BALISTIQUE */
-.ballistics-mask-ammo { left: 74%; top: 13%; width: 12%; height: 8%; }
-.ballistics-mask-weapon { left: 74%; top: 34.3%; width: 12%; height: 8%; }
-.ballistics-mask-serial { left: 67%; top: 55%; width: 24%; height: 9%; }
-
-.ammo-type-value {
-  left: 74.8%;
-  top: 17.1%;
-  font-size: 1.85%;
-  color: #dfe9f5;
-}
-
-.weapon-type-value {
-  left: 74.8%;
-  top: 38.5%;
-  font-size: 1.85%;
-  color: #dfe9f5;
-}
-
-.weapon-serial-value {
-  left: 68%;
-  top: 59.2%;
-  font-size: 1.65%;
-  color: #dfe9f5;
-  max-width: 21%;
-  word-break: break-word;
-  line-height: 1.15;
-}
-
-.field {
-  position: absolute;
-  text-shadow: 0 0 8px rgba(0,0,0,0.8);
-  font-weight: 500;
 }
 
 @media (max-width: 1200px) {
