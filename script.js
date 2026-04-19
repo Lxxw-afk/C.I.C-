@@ -134,7 +134,6 @@ function renderEvidence() {
     circle.setAttribute("r", item.r);
     circle.setAttribute("class", "evidence-node");
     circle.setAttribute("data-id", item.id);
-    circle.setAttribute("tabindex", "0");
 
     if (state.foundEvidenceIds.includes(item.id)) {
       circle.classList.add("found");
@@ -144,13 +143,6 @@ function renderEvidence() {
       event.preventDefault();
       event.stopPropagation();
       collectEvidence(item.id);
-    });
-
-    circle.addEventListener("keydown", (event) => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        collectEvidence(item.id);
-      }
     });
 
     sceneSvg.appendChild(circle);
