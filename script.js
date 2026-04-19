@@ -2,13 +2,12 @@ const evidenceData = [
   {
     id: 1,
     code: "P1",
-    name: "Sang de la victime.",
+    name: "Sang de la victime",
     category: "Biologique",
     description: "Trace de sang appartenant à la victime.",
-    x: 47.6,
-    y: 56.8,
-    w: 4.4,
-    h: 8.2,
+    cx: 52.0,
+    cy: 61.0,
+    size: 5.8,
     bloodProfile: {
       fullName: "Lucas Martin",
       birthDate: "12/08/1997",
@@ -24,10 +23,9 @@ const evidenceData = [
     name: "Balle ensanglantée",
     category: "Projectile",
     description: "Projectile tiré par l'auteur en fuite, avec le sang d'une autre personne.",
-    x: 73.0,
-    y: 78.2,
-    w: 4.2,
-    h: 6.8,
+    cx: 74.2,
+    cy: 81.6,
+    size: 4.6,
     bloodProfile: {
       fullName: "Sarah Moreau",
       birthDate: "03/11/1994",
@@ -48,10 +46,9 @@ const evidenceData = [
     name: "Arme de la victime",
     category: "Arme à feu",
     description: "Arme appartenant à la victime.",
-    x: 49.8,
-    y: 67.8,
-    w: 5.6,
-    h: 8.8,
+    cx: 48.7,
+    cy: 77.6,
+    size: 5.4,
     ballisticsProfile: {
       ammoType: "9mm",
       weaponType: "Pistol",
@@ -64,10 +61,9 @@ const evidenceData = [
     name: "Douille 1",
     category: "Balistique",
     description: "Douille tirée par le second tireur en fuite.",
-    x: 28.8,
-    y: 84.0,
-    w: 2.6,
-    h: 4.8,
+    cx: 31.0,
+    cy: 86.0,
+    size: 3.0,
     ballisticsProfile: {
       ammoType: "9mm",
       weaponType: "Pistol",
@@ -80,10 +76,9 @@ const evidenceData = [
     name: "Douille 2",
     category: "Balistique",
     description: "Seconde douille tirée par le second tireur en fuite.",
-    x: 3.8,
-    y: 66.0,
-    w: 3.2,
-    h: 5.4,
+    cx: 4.3,
+    cy: 69.0,
+    size: 3.2,
     ballisticsProfile: {
       ammoType: "9mm",
       weaponType: "Pistol",
@@ -91,7 +86,6 @@ const evidenceData = [
     }
   }
 ];
-
 const state = {
   foundEvidenceIds: [],
   selectedEvidenceId: null,
@@ -140,10 +134,11 @@ function renderEvidence() {
       hotspot.classList.add("found");
     }
 
-    hotspot.style.left = `${item.x}%`;
-    hotspot.style.top = `${item.y}%`;
-    hotspot.style.width = `${item.w}%`;
-    hotspot.style.height = `${item.h}%`;
+    hotspot.style.left = `${item.cx}%`;
+    hotspot.style.top = `${item.cy}%`;
+    hotspot.style.width = `${item.size}%`;
+    hotspot.style.height = `${item.size}%`;
+
     hotspot.title = state.foundEvidenceIds.includes(item.id)
       ? `${item.name} collecté`
       : item.name;
