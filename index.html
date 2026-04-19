@@ -12,7 +12,7 @@
       <header class="topbar">
         <div>
           <h1>Scène de crime - Salon</h1>
-          <p>Fouille la pièce, récupère les preuves, puis ouvre la tablette avec <strong>T</strong>.</p>
+          <p>Fouille la scène, récupère les preuves, puis ouvre la tablette avec <strong>T</strong>.</p>
         </div>
 
         <div class="topbar-actions">
@@ -111,34 +111,37 @@
           <div class="analysis-visual hidden" id="analysisVisual">
             <img id="analysisTemplateImage" src="" alt="Analyse" class="analysis-template-image" />
 
+            <!-- Analyse sang -->
             <div id="bloodOverlay" class="analysis-overlay hidden">
-              <div class="field blood-name-label">Nom</div>
+              <!-- Masques pour cacher les anciennes infos intégrées dans l'image -->
+              <div class="mask blood-mask-name"></div>
+              <div class="mask blood-mask-dob"></div>
+              <div class="mask blood-mask-sex"></div>
+              <div class="mask blood-mask-group"></div>
+              <div class="mask blood-mask-country"></div>
+              <div class="mask blood-mask-fingerprint"></div>
+              <div class="mask blood-mask-name-secondary"></div>
+
+              <!-- Valeurs dynamiques -->
               <div class="field blood-name-value" id="bloodNameValue">-</div>
-
-              <div class="field blood-dob-label">Date de naissance</div>
               <div class="field blood-dob-value" id="bloodDobValue">-</div>
-
-              <div class="field blood-sex-label">Sexe</div>
               <div class="field blood-sex-value" id="bloodSexValue">-</div>
-
-              <div class="field blood-group-label">Groupe sanguin</div>
               <div class="field blood-group-value" id="bloodGroupValue">-</div>
-
-              <div class="field blood-country-label">Pays</div>
               <div class="field blood-country-value" id="bloodCountryValue">-</div>
-
-              <div class="field blood-fingerprint-label">Empreinte digitale</div>
               <div class="field blood-fingerprint-value" id="bloodFingerprintValue">-</div>
+
+              <!-- Valeur répétée sous le nom, pour remplacer aussi le texte au centre droit -->
+              <div class="field blood-name-secondary-value" id="bloodNameSecondaryValue">-</div>
             </div>
 
+            <!-- Analyse balistique -->
             <div id="ballisticsOverlay" class="analysis-overlay hidden">
-              <div class="field ammo-type-label">Type de munitions</div>
+              <div class="mask ballistics-mask-ammo"></div>
+              <div class="mask ballistics-mask-weapon"></div>
+              <div class="mask ballistics-mask-serial"></div>
+
               <div class="field ammo-type-value" id="ammoTypeValue">-</div>
-
-              <div class="field weapon-type-label">Arme utilisée</div>
               <div class="field weapon-type-value" id="weaponTypeValue">-</div>
-
-              <div class="field weapon-serial-label">Numéro de série de l'arme</div>
               <div class="field weapon-serial-value" id="weaponSerialValue">-</div>
             </div>
           </div>
