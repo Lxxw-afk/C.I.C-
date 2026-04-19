@@ -168,15 +168,16 @@ body {
 /* zones cliquables invisibles */
 .evidence-hotspot {
   position: absolute;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
+  transform: translate(-50%, -50%);
   cursor: pointer;
   background: rgba(255,255,255,0.001);
-  transform: translate(-50%, -50%);
-  transition: box-shadow 0.15s ease, opacity 0.2s ease;
 }
 
 .evidence-hotspot:hover {
-  box-shadow: 0 0 0 2px rgba(255, 216, 106, 0.45);
+  box-shadow: 0 0 0 2px rgba(255, 216, 106, 0.6);
 }
 
 .evidence-hotspot.found {
