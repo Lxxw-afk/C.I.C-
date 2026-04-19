@@ -431,4 +431,30 @@ body {
     grid-template-columns: 1fr;
   }
 }
+.evidence-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+}
 
+.evidence-hotspot {
+  position: absolute;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  background: rgba(255, 216, 106, 0.18);
+  border: 2px solid rgba(255, 216, 106, 0.95);
+  box-shadow: 0 0 0 2px rgba(0,0,0,0.18);
+  pointer-events: auto;
+  z-index: 21;
+}
+
+.evidence-hotspot:hover {
+  box-shadow: 0 0 0 2px rgba(255, 216, 106, 0.95), 0 0 12px rgba(255,216,106,0.35);
+}
+
+.evidence-hotspot.found {
+  opacity: 0;
+  pointer-events: none;
+}
