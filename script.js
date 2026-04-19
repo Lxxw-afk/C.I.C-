@@ -82,24 +82,25 @@ function init() {
   addLog("Système lancé. Début de la fouille de la scène.");
 }
 
-function renderEvidence() {
-  evidenceLayer.innerHTML = "";
+function collectEvidence(id) {
+  const item = evidenceData.find(e => e.id === id);
+  if (!item) return;
 
-  evidenceData.forEach((item) => {
-    const hotspot = document.createElement("div");
-    hotspot.className = "evidence-hotspot";
+  if (state.foundEvidenceIds.includes(id)) {
+    return;
+  }
 
-    hotspot.style.left = item.cx + "%";
-    hotspot.style.top = item.cy + "%";
-    hotspot.style.width = item.size + "%";
-    hotspot.style.height = item.size + "%";
+  state.foundEvidenceIds.push(id);
+  state.selectedEvidenceId = id;
 
-    hotspot.addEventListener("click", () => {
-      collectEvidence(item.id);
-    });
+  renderEvidence();
+  renderInventory();
+  renderProofList();
+  updateTabletSelection();
+  updateStats();
 
-    evidenceLayer.appendChild(hotspot);
-  });
+  setResult(`Preuve récupérée : ${item.name}`);
+  addLog(`Preuve récupérée : ${item.name}.`);
 }
 function collectEvidence(id) {
   const item = getEvidenceById(id);
