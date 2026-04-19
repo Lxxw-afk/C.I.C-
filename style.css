@@ -149,16 +149,14 @@ body {
 }
 
 .evidence-node {
-  fill: transparent;
-  stroke: transparent;
-  stroke-width: 20;
+  fill: rgba(255, 0, 0, 0.35);
+  stroke: red;
+  stroke-width: 2;
   cursor: pointer;
-  pointer-events: all;
 }
 
 .evidence-node:hover {
-  fill: transparent;
-  stroke: transparent;
+  fill: rgba(255, 255, 0, 0.6);
 }
 
 .evidence-node.found {
