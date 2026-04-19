@@ -163,18 +163,20 @@ body {
   backdrop-filter: blur(8px);
 }
 
+/* Corps au sol */
 .body-image {
   position: absolute;
-  left: 50.6%;
-  top: 66.8%;
-  width: 21%;
-  transform: translate(-50%, -50%) rotate(-2deg);
+  left: 50.8%;
+  top: 63.8%;
+  width: 16.5%;
+  transform: translate(-50%, -50%) rotate(-8deg);
   z-index: 2;
   pointer-events: none;
-  opacity: 0.95;
+  opacity: 0.96;
   filter: drop-shadow(0 10px 14px rgba(0,0,0,0.35));
 }
 
+/* Flaques de sang */
 .blood-pool {
   position: absolute;
   z-index: 2;
@@ -185,17 +187,17 @@ body {
 }
 
 .blood-main {
-  left: 56.8%;
-  top: 74.2%;
-  width: 8.5%;
-  height: 3.2%;
-  transform: rotate(-6deg);
+  left: 55.8%;
+  top: 69.8%;
+  width: 8.8%;
+  height: 3.6%;
+  transform: rotate(-8deg);
 }
 
 .blood-side {
-  left: 60.5%;
-  top: 71.8%;
-  width: 2%;
+  left: 59.8%;
+  top: 67.8%;
+  width: 2.1%;
   height: 1.2%;
 }
 
@@ -266,6 +268,38 @@ body {
   background: linear-gradient(90deg, #4d3322 0 32%, #aab4be 32% 100%);
   opacity: 0.42;
   transform: rotate(13deg);
+}
+
+.evidence-gun {
+  width: 4.6%;
+  height: 2.3%;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #1a1d22, #343a44);
+  clip-path: polygon(0 35%, 58% 35%, 66% 0, 86% 0, 100% 22%, 100% 46%, 70% 46%, 72% 68%, 58% 100%, 42% 100%, 46% 58%, 0 58%);
+  opacity: 0.9;
+  transform: rotate(8deg);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+}
+
+.evidence-bloody-bullet {
+  width: 2.2%;
+  height: 1.1%;
+  border-radius: 10px 50% 50% 10px;
+  background: linear-gradient(90deg, #6e615c 0%, #b6a59d 58%, #61534f 100%);
+  opacity: 0.85;
+  transform: rotate(-18deg);
+}
+
+.evidence-bloody-bullet::after {
+  content: "";
+  position: absolute;
+  right: -10%;
+  top: -20%;
+  width: 55%;
+  height: 90%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(120,0,0,0.88), rgba(70,0,0,0.55));
+  filter: blur(0.5px);
 }
 
 .sidebar {
@@ -521,37 +555,115 @@ body {
   font-family: Arial, sans-serif;
 }
 
-.field {
+/* Masques pour cacher le texte déjà intégré dans tes images */
+.mask {
   position: absolute;
-  text-shadow: 0 0 8px rgba(0,0,0,0.75);
+  background: rgba(4, 8, 20, 0.92);
+  border-radius: 6px;
+  filter: blur(0.2px);
 }
 
-.blood-name-label { left: 67%; top: 16%; font-size: 2.4%; font-weight: 700; }
-.blood-name-value { left: 67%; top: 20.4%; font-size: 1.75%; color: #b9c8da; }
+/* SANG */
+.blood-mask-name { left: 79.5%; top: 15.4%; width: 16%; height: 10.4%; }
+.blood-mask-name-secondary { left: 79.5%; top: 23.3%; width: 16%; height: 6.5%; }
+.blood-mask-dob { left: 10.3%; top: 15.1%; width: 11%; height: 9.5%; }
+.blood-mask-sex { left: 10.8%; top: 43%; width: 10%; height: 8.5%; }
+.blood-mask-group { left: 10.6%; top: 66.4%; width: 10%; height: 8.5%; }
+.blood-mask-country { left: 79%; top: 67%; width: 9%; height: 7.6%; }
+.blood-mask-fingerprint { left: 82%; top: 43.4%; width: 13.5%; height: 8.5%; }
 
-.blood-dob-label { left: 10.5%; top: 16%; font-size: 2.4%; font-weight: 700; }
-.blood-dob-value { left: 10.5%; top: 20.4%; font-size: 1.75%; color: #b9c8da; }
+.blood-name-value {
+  left: 80.2%;
+  top: 18%;
+  font-size: 1.65%;
+  color: #dfe9f5;
+  max-width: 14%;
+  text-align: left;
+  line-height: 1.25;
+}
 
-.blood-sex-label { left: 12.8%; top: 43.2%; font-size: 2.4%; font-weight: 700; }
-.blood-sex-value { left: 12.8%; top: 47.3%; font-size: 1.75%; color: #b9c8da; }
+.blood-name-secondary-value {
+  left: 80.2%;
+  top: 25.2%;
+  font-size: 1.55%;
+  color: #b9c8da;
+  max-width: 14%;
+  text-align: left;
+  line-height: 1.25;
+}
 
-.blood-group-label { left: 11%; top: 66.5%; font-size: 2.4%; font-weight: 700; }
-.blood-group-value { left: 11%; top: 70.8%; font-size: 1.75%; color: #b9c8da; }
+.blood-dob-value {
+  left: 10.8%;
+  top: 20.2%;
+  font-size: 1.6%;
+  color: #dfe9f5;
+}
 
-.blood-country-label { left: 76.4%; top: 67.2%; font-size: 2.4%; font-weight: 700; }
-.blood-country-value { left: 76.4%; top: 71.4%; font-size: 1.75%; color: #b9c8da; }
+.blood-sex-value {
+  left: 13.1%;
+  top: 48%;
+  font-size: 1.6%;
+  color: #dfe9f5;
+}
 
-.blood-fingerprint-label { left: 72.5%; top: 42.3%; font-size: 2.4%; font-weight: 700; }
-.blood-fingerprint-value { left: 72.5%; top: 46.6%; font-size: 1.65%; color: #b9c8da; }
+.blood-group-value {
+  left: 11.4%;
+  top: 71.1%;
+  font-size: 1.6%;
+  color: #dfe9f5;
+}
 
-.ammo-type-label { left: 73%; top: 12%; font-size: 2.6%; font-weight: 700; }
-.ammo-type-value { left: 73%; top: 16.6%; font-size: 1.9%; color: #b9c8da; }
+.blood-country-value {
+  left: 79.8%;
+  top: 71.4%;
+  font-size: 1.6%;
+  color: #dfe9f5;
+}
 
-.weapon-type-label { left: 73%; top: 33%; font-size: 2.6%; font-weight: 700; }
-.weapon-type-value { left: 73%; top: 37.7%; font-size: 1.9%; color: #b9c8da; }
+.blood-fingerprint-value {
+  left: 82.8%;
+  top: 48%;
+  font-size: 1.45%;
+  color: #dfe9f5;
+  max-width: 12.5%;
+  word-break: break-word;
+  line-height: 1.15;
+}
 
-.weapon-serial-label { left: 67%; top: 54%; font-size: 2.5%; font-weight: 700; }
-.weapon-serial-value { left: 67%; top: 58.8%; font-size: 1.75%; color: #b9c8da; max-width: 28%; word-break: break-word; }
+/* BALISTIQUE */
+.ballistics-mask-ammo { left: 74%; top: 13%; width: 12%; height: 8%; }
+.ballistics-mask-weapon { left: 74%; top: 34.3%; width: 12%; height: 8%; }
+.ballistics-mask-serial { left: 67%; top: 55%; width: 24%; height: 9%; }
+
+.ammo-type-value {
+  left: 74.8%;
+  top: 17.1%;
+  font-size: 1.85%;
+  color: #dfe9f5;
+}
+
+.weapon-type-value {
+  left: 74.8%;
+  top: 38.5%;
+  font-size: 1.85%;
+  color: #dfe9f5;
+}
+
+.weapon-serial-value {
+  left: 68%;
+  top: 59.2%;
+  font-size: 1.65%;
+  color: #dfe9f5;
+  max-width: 21%;
+  word-break: break-word;
+  line-height: 1.15;
+}
+
+.field {
+  position: absolute;
+  text-shadow: 0 0 8px rgba(0,0,0,0.8);
+  font-weight: 500;
+}
 
 @media (max-width: 1200px) {
   body {
