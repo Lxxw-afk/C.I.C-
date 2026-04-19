@@ -1,1 +1,579 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simulation - Scène de crime</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #0e1116;
+      color: #f5f7fa;
+    }
 
+    .app {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      min-height: 100vh;
+    }
+
+    .scene-wrapper {
+      padding: 20px;
+      border-right: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .title {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .subtitle {
+      color: #aeb7c2;
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    .scene {
+      position: relative;
+      width: 100%;
+      max-width: 1100px;
+      height: 680px;
+      border-radius: 20px;
+      overflow: hidden;
+      background:
+        linear-gradient(rgba(0,0,0,0.10), rgba(0,0,0,0.20)),
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,0.06), transparent 20%),
+        linear-gradient(180deg, #555 0%, #424242 100%);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .room-label {
+      position: absolute;
+      background: rgba(0,0,0,0.32);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #dbe4ef;
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      backdrop-filter: blur(6px);
+    }
+
+    .object {
+      position: absolute;
+      border-radius: 12px;
+    }
+
+    .desk { left: 140px; top: 120px; width: 240px; height: 90px; background: #593b22; }
+    .sofa { left: 680px; top: 120px; width: 220px; height: 85px; background: #4b5d6b; }
+    .body {
+      left: 420px; top: 330px; width: 180px; height: 70px;
+      background: #232833; transform: rotate(-12deg);
+      border-radius: 40px;
+      box-shadow: 0 0 0 2px rgba(255,255,255,0.03) inset;
+    }
+    .blood-pool {
+      left: 475px; top: 372px; width: 120px; height: 62px;
+      background: radial-gradient(circle, rgba(120,0,0,0.9), rgba(70,0,0,0.7));
+      border-radius: 50%; filter: blur(1px);
+    }
+    .lamp { left: 80px; top: 70px; width: 30px; height: 120px; background: #888; }
+    .cabinet { left: 860px; top: 300px; width: 120px; height: 220px; background: #2b313b; }
+    .table-small { left: 180px; top: 460px; width: 140px; height: 70px; background: #6a4a2c; }
+
+    .evidence {
+      position: absolute;
+      width: 34px;
+      height: 34px;
+      border: 2px solid #ffd54a;
+      background: rgba(255, 213, 74, 0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease, opacity 0.2s ease;
+      box-shadow: 0 0 0 4px rgba(255, 213, 74, 0.08);
+    }
+
+    .evidence:hover {
+      transform: scale(1.08);
+      background: rgba(255, 213, 74, 0.28);
+    }
+
+    .evidence.found {
+      opacity: 0.35;
+      border-color: #62d48f;
+      background: rgba(98, 212, 143, 0.18);
+      box-shadow: 0 0 0 4px rgba(98, 212, 143, 0.08);
+    }
+
+    .evidence-number {
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff0b0;
+      pointer-events: none;
+    }
+
+    .hint {
+      margin-top: 14px;
+      color: #9aa6b2;
+      font-size: 14px;
+    }
+
+    .panel {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      background: #121720;
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .card h2 {
+      margin: 0 0 12px;
+      font-size: 18px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.04);
+      border-radius: 12px;
+      padding: 10px;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .stat-label { font-size: 12px; color: #9aa6b2; }
+    .stat-value { font-size: 22px; font-weight: 700; margin-top: 4px; }
+
+    .inventory, .analysis-log {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 240px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .inventory-item, .log-item {
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.03);
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .inventory-item button, .actions button, .toolbar button {
+      cursor: pointer;
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-weight: 700;
+      color: #081018;
+      background: #ffd54a;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    .inventory-item button:hover, .actions button:hover, .toolbar button:hover {
+      transform: translateY(-1px);
+    }
+
+    .inventory-item button:disabled {
+      opacity: 0.45;
+      cursor: default;
+      transform: none;
+    }
+
+    .inventory-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .inventory-name {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .badge {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      color: #d2dce8;
+    }
+
+    .inventory-desc {
+      font-size: 13px;
+      color: #b6c1cc;
+      margin-bottom: 10px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .actions button.secondary, .toolbar button.secondary {
+      background: #7ec8ff;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .empty {
+      color: #8d98a4;
+      font-size: 14px;
+      padding: 6px 2px;
+    }
+
+    .result-box {
+      min-height: 130px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+      padding: 12px;
+      color: #dce6f2;
+      line-height: 1.45;
+      white-space: pre-line;
+    }
+
+    .footer-note {
+      color: #8d98a4;
+      font-size: 12px;
+    }
+
+    @media (max-width: 1200px) {
+      .app { grid-template-columns: 1fr; }
+      .scene { height: 560px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="scene-wrapper">
+      <div class="topbar">
+        <div>
+          <div class="title">Scène de crime - Appartement 3B</div>
+          <div class="subtitle">Trouve les indices, collecte-les, puis lance les analyses.</div>
+        </div>
+        <div class="toolbar">
+          <button id="resetBtn" class="secondary">Réinitialiser</button>
+        </div>
+      </div>
+
+      <div class="scene" id="scene">
+        <div class="room-label" style="left: 30px; top: 20px;">Salon</div>
+        <div class="room-label" style="right: 30px; top: 20px;">Coin bureau</div>
+        <div class="room-label" style="left: 30px; bottom: 20px;">Zone principale</div>
+
+        <div class="object desk"></div>
+        <div class="object sofa"></div>
+        <div class="object body"></div>
+        <div class="object blood-pool"></div>
+        <div class="object lamp"></div>
+        <div class="object cabinet"></div>
+        <div class="object table-small"></div>
+      </div>
+
+      <div class="hint">Clique sur les repères numérotés pour relever un indice.</div>
+    </div>
+
+    <aside class="panel">
+      <section class="card">
+        <h2>Progression</h2>
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-label">Indices trouvés</div>
+            <div class="stat-value" id="foundCount">0</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Indices total</div>
+            <div class="stat-value" id="totalCount">0</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Analyses faites</div>
+            <div class="stat-value" id="analysisCount">0</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Affaire</div>
+            <div class="stat-value" style="font-size:16px;">Homicide</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Inventaire des preuves</h2>
+        <div class="inventory" id="inventory"></div>
+      </section>
+
+      <section class="card">
+        <h2>Résultat d'analyse</h2>
+        <div class="result-box" id="analysisResult">Sélectionne une preuve trouvée puis lance une analyse.</div>
+      </section>
+
+      <section class="card">
+        <h2>Journal</h2>
+        <div class="analysis-log" id="analysisLog"></div>
+      </section>
+
+      <div class="footer-note">Base de démonstration. Tu pourras ensuite ajouter empreintes, ADN, chronologie, suspects, photos, interface labo, score d’enquête, etc.</div>
+    </aside>
+  </div>
+
+  <script>
+    const evidenceData = [
+      {
+        id: 1,
+        name: 'Échantillon de sang',
+        type: 'Biologique',
+        description: 'Trace de sang relevée près du corps.',
+        x: 530,
+        y: 404,
+        analyses: {
+          blood: 'Analyse sanguine : groupe B+. Le sang correspond à la victime présumée.',
+          dna: 'ADN exploitable détecté. Profil principal isolé, compatible avec la victime.',
+          ballistics: 'Analyse balistique impossible : cette preuve n’est pas un projectile.'
+        }
+      },
+      {
+        id: 2,
+        name: 'Douille de calibre 9mm',
+        type: 'Balistique',
+        description: 'Douille retrouvée sous la table basse.',
+        x: 305,
+        y: 505,
+        analyses: {
+          blood: 'Aucune présence significative de sang détectée sur la douille.',
+          dna: 'ADN partiel détecté sur la douille. Profil incomplet, exploitable plus tard.',
+          ballistics: 'Analyse balistique : douille tirée par une arme de poing 9mm. Percuteur présentant une signature potentiellement identifiable.'
+        }
+      },
+      {
+        id: 3,
+        name: 'Balle ensanglantée',
+        type: 'Projectile',
+        description: 'Projectile déformé trouvé à proximité du mur.',
+        x: 770,
+        y: 275,
+        analyses: {
+          blood: 'Présence de sang humain sur le projectile. Traces cohérentes avec un impact post-traversée.',
+          dna: 'ADN mixte détecté : profil majeur compatible avec la victime, second profil mineur à confirmer.',
+          ballistics: 'Projectile compatible avec un calibre 9mm. Rayures exploitables pour comparaison avec une arme saisie.'
+        }
+      },
+      {
+        id: 4,
+        name: 'Téléphone brisé',
+        type: 'Numérique',
+        description: 'Téléphone au sol avec écran fissuré.',
+        x: 630,
+        y: 340,
+        analyses: {
+          blood: 'Microtraces de sang sur la coque. Dépôt superficiel.',
+          dna: 'ADN tactile possible sur les bords de l’appareil.',
+          ballistics: 'Analyse balistique non pertinente pour cet objet.'
+        }
+      },
+      {
+        id: 5,
+        name: 'Couteau de cuisine',
+        type: 'Arme blanche',
+        description: 'Couteau retrouvé près du bureau.',
+        x: 390,
+        y: 175,
+        analyses: {
+          blood: 'Sang présent sur la lame. La quantité suggère un contact direct récent.',
+          dna: 'ADN sur le manche en cours d’exploitation. Présence de plusieurs contributeurs possible.',
+          ballistics: 'Analyse balistique impossible : preuve non concernée.'
+        }
+      }
+    ];
+
+    const state = {
+      foundEvidenceIds: [],
+      analysisCount: 0,
+      selectedEvidenceId: null
+    };
+
+    const scene = document.getElementById('scene');
+    const inventory = document.getElementById('inventory');
+    const analysisResult = document.getElementById('analysisResult');
+    const analysisLog = document.getElementById('analysisLog');
+    const foundCount = document.getElementById('foundCount');
+    const totalCount = document.getElementById('totalCount');
+    const analysisCount = document.getElementById('analysisCount');
+    const resetBtn = document.getElementById('resetBtn');
+
+    function init() {
+      totalCount.textContent = evidenceData.length;
+      renderEvidenceMarkers();
+      renderInventory();
+      renderLog('Système initialisé. Début de la fouille de la scène.');
+      updateStats();
+    }
+
+    function renderEvidenceMarkers() {
+      document.querySelectorAll('.evidence').forEach(el => el.remove());
+
+      evidenceData.forEach(item => {
+        const marker = document.createElement('button');
+        marker.className = 'evidence';
+        marker.style.left = item.x + 'px';
+        marker.style.top = item.y + 'px';
+        marker.title = state.foundEvidenceIds.includes(item.id)
+          ? `${item.name} (déjà collecté)`
+          : `Indice ${item.id}`;
+
+        if (state.foundEvidenceIds.includes(item.id)) {
+          marker.classList.add('found');
+        }
+
+        marker.innerHTML = `<span class="evidence-number">${item.id}</span>`;
+        marker.addEventListener('click', () => collectEvidence(item.id));
+        scene.appendChild(marker);
+      });
+    }
+
+    function collectEvidence(id) {
+      if (state.foundEvidenceIds.includes(id)) {
+        const item = getEvidenceById(id);
+        setResult(`Indice déjà collecté : ${item.name}`);
+        return;
+      }
+
+      const item = getEvidenceById(id);
+      state.foundEvidenceIds.push(id);
+      state.selectedEvidenceId = id;
+
+      renderEvidenceMarkers();
+      renderInventory();
+      updateStats();
+
+      setResult(`Preuve collectée : ${item.name}\n\nDescription : ${item.description}\nType : ${item.type}`);
+      renderLog(`Indice #${item.id} collecté : ${item.name}.`);
+    }
+
+    function renderInventory() {
+      const foundItems = evidenceData.filter(item => state.foundEvidenceIds.includes(item.id));
+      inventory.innerHTML = '';
+
+      if (!foundItems.length) {
+        inventory.innerHTML = '<div class="empty">Aucune preuve collectée pour le moment.</div>';
+        return;
+      }
+
+      foundItems.forEach(item => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'inventory-item';
+
+        wrapper.innerHTML = `
+          <div class="inventory-header">
+            <div>
+              <div class="inventory-name">${item.name}</div>
+              <div class="inventory-desc">${item.description}</div>
+            </div>
+            <span class="badge">${item.type}</span>
+          </div>
+          <div class="actions">
+            <button data-action="select">Sélectionner</button>
+            <button class="secondary" data-action="blood">Analyse sang</button>
+            <button class="secondary" data-action="dna">Analyse ADN</button>
+            <button class="secondary" data-action="ballistics">Balistique</button>
+          </div>
+        `;
+
+        wrapper.querySelector('[data-action="select"]').addEventListener('click', () => {
+          state.selectedEvidenceId = item.id;
+          setResult(`Preuve sélectionnée : ${item.name}\n\nChoisis maintenant une analyse.`);
+          renderLog(`Preuve sélectionnée : ${item.name}.`);
+        });
+
+        wrapper.querySelector('[data-action="blood"]').addEventListener('click', () => runAnalysis(item.id, 'blood', 'Analyse sang'));
+        wrapper.querySelector('[data-action="dna"]').addEventListener('click', () => runAnalysis(item.id, 'dna', 'Analyse ADN'));
+        wrapper.querySelector('[data-action="ballistics"]').addEventListener('click', () => runAnalysis(item.id, 'ballistics', 'Analyse balistique'));
+
+        inventory.appendChild(wrapper);
+      });
+    }
+
+    function runAnalysis(id, analysisType, label) {
+      const item = getEvidenceById(id);
+      const result = item.analyses[analysisType];
+      state.selectedEvidenceId = id;
+      state.analysisCount += 1;
+      updateStats();
+
+      setResult(`${label} - ${item.name}\n\n${result}`);
+      renderLog(`${label} effectué sur ${item.name}.`);
+    }
+
+    function renderLog(message) {
+      const line = document.createElement('div');
+      line.className = 'log-item';
+
+      const now = new Date();
+      const time = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      line.textContent = `[${time}] ${message}`;
+
+      analysisLog.prepend(line);
+    }
+
+    function setResult(text) {
+      analysisResult.textContent = text;
+    }
+
+    function updateStats() {
+      foundCount.textContent = state.foundEvidenceIds.length;
+      analysisCount.textContent = state.analysisCount;
+    }
+
+    function getEvidenceById(id) {
+      return evidenceData.find(item => item.id === id);
+    }
+
+    function resetCase() {
+      state.foundEvidenceIds = [];
+      state.analysisCount = 0;
+      state.selectedEvidenceId = null;
+      analysisLog.innerHTML = '';
+      setResult('Sélectionne une preuve trouvée puis lance une analyse.');
+      renderEvidenceMarkers();
+      renderInventory();
+      updateStats();
+      renderLog('Affaire réinitialisée. Nouvelle fouille lancée.');
+    }
+
+    resetBtn.addEventListener('click', resetCase);
+
+    init();
+  </script>
+</body>
+</html>
