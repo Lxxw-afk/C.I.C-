@@ -4,47 +4,89 @@ const evidenceData = [
     code: "P1",
     name: "Sang victime",
     category: "Biologique",
-    cx: 50.5,
-    cy: 64.5,
-    size: 5
+    description: "Trace de sang appartenant à la victime.",
+    x: 770,
+    y: 560,
+    r: 34,
+    bloodProfile: {
+      fullName: "Lucas Martin",
+      birthDate: "12/08/1997",
+      sex: "Homme",
+      bloodGroup: "A+",
+      country: "France",
+      fingerprint: "7845123698754412"
+    }
   },
   {
     id: 2,
     code: "P2",
     name: "Balle ensanglantée",
     category: "Projectile",
-    cx: 75.8,
-    cy: 82.8,
-    size: 4.5
+    description: "Projectile tiré par l'auteur en fuite, avec le sang d'une autre personne.",
+    x: 1065,
+    y: 665,
+    r: 28,
+    bloodProfile: {
+      fullName: "Sarah Moreau",
+      birthDate: "03/11/1994",
+      sex: "Femme",
+      bloodGroup: "O-",
+      country: "France",
+      fingerprint: "9912457800341187"
+    },
+    ballisticsProfile: {
+      ammoType: "9mm",
+      weaponType: "Pistol",
+      serialNumber: "FT-8821-09"
+    }
   },
   {
     id: 3,
     code: "P3",
-    name: "Arme",
-    category: "Arme",
-    cx: 52.5,
-    cy: 73.5,
-    size: 5
+    name: "Arme de la victime",
+    category: "Arme à feu",
+    description: "Arme appartenant à la victime.",
+    x: 760,
+    y: 630,
+    r: 34,
+    ballisticsProfile: {
+      ammoType: "9mm",
+      weaponType: "Pistol",
+      serialNumber: "LM-1208-97"
+    }
   },
   {
     id: 4,
     code: "P4",
     name: "Douille 1",
     category: "Balistique",
-    cx: 32.5,
-    cy: 87.5,
-    size: 3
+    description: "Douille tirée par le second tireur en fuite.",
+    x: 470,
+    y: 720,
+    r: 22,
+    ballisticsProfile: {
+      ammoType: "9mm",
+      weaponType: "Pistol",
+      serialNumber: "FT-8821-09"
+    }
   },
   {
     id: 5,
     code: "P5",
     name: "Douille 2",
     category: "Balistique",
-    cx: 6.5,
-    cy: 70,
-    size: 3.2
+    description: "Seconde douille tirée par le second tireur en fuite.",
+    x: 85,
+    y: 585,
+    r: 22,
+    ballisticsProfile: {
+      ammoType: "9mm",
+      weaponType: "Pistol",
+      serialNumber: "FT-8821-09"
+    }
   }
 ];
+
 const state = {
   foundEvidenceIds: [],
   selectedEvidenceId: null,
@@ -52,7 +94,7 @@ const state = {
   tabletOpen: false
 };
 
-const evidenceLayer = document.getElementById("evidenceLayer");
+const sceneSvg = document.getElementById("sceneSvg");
 const inventory = document.getElementById("inventory");
 const resultBox = document.getElementById("resultBox");
 const journal = document.getElementById("journal");
@@ -82,28 +124,42 @@ function init() {
   addLog("Système lancé. Début de la fouille de la scène.");
 }
 
-function collectEvidence(id) {
-  const item = evidenceData.find(e => e.id === id);
-  if (!item) return;
+function renderEvidence() {
+  sceneSvg.innerHTML = "";
 
-  if (state.foundEvidenceIds.includes(id)) {
-    return;
-  }
+  evidenceData.forEach((item) => {
+    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    circle.setAttribute("cx", item.x);
+    circle.setAttribute("cy", item.y);
+    circle.setAttribute("r", item.r);
+    circle.setAttribute("class", "evidence-node");
+    circle.setAttribute("data-id", item.id);
+    circle.setAttribute("tabindex", "0");
 
-  state.foundEvidenceIds.push(id);
-  state.selectedEvidenceId = id;
+    if (state.foundEvidenceIds.includes(item.id)) {
+      circle.classList.add("found");
+    }
 
-  renderEvidence();
-  renderInventory();
-  renderProofList();
-  updateTabletSelection();
-  updateStats();
+    circle.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      collectEvidence(item.id);
+    });
 
-  setResult(`Preuve récupérée : ${item.name}`);
-  addLog(`Preuve récupérée : ${item.name}.`);
+    circle.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        collectEvidence(item.id);
+      }
+    });
+
+    sceneSvg.appendChild(circle);
+  });
 }
+
 function collectEvidence(id) {
   const item = getEvidenceById(id);
+  if (!item) return;
 
   if (state.foundEvidenceIds.includes(id)) {
     setResult(`Cette preuve a déjà été récupérée : ${item.name}`);
