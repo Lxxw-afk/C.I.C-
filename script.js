@@ -1,49 +1,48 @@
 const evidenceData = [
   {
     id: 1,
-    name: "Sang de la victime",
-    x: 860,
-    y: 540,
-    bloodProfile: {
-      fullName: "Lucas Martin",
-      birthDate: "12/08/1997",
-      sex: "Homme",
-      bloodGroup: "A+",
-      country: "France",
-      fingerprint: "7845123698754412"
-    }
+    code: "P1",
+    name: "Sang victime",
+    category: "Biologique",
+    cx: 50.5,
+    cy: 64.5,
+    size: 5
   },
   {
     id: 2,
+    code: "P2",
     name: "Balle ensanglantée",
-    x: 1210,
-    y: 720,
-    bloodProfile: {
-      fullName: "Sarah Moreau",
-      birthDate: "03/11/1994",
-      sex: "Femme",
-      bloodGroup: "O-",
-      country: "France",
-      fingerprint: "9912457800341187"
-    }
+    category: "Projectile",
+    cx: 75.8,
+    cy: 82.8,
+    size: 4.5
   },
   {
     id: 3,
+    code: "P3",
     name: "Arme",
-    x: 880,
-    y: 660
+    category: "Arme",
+    cx: 52.5,
+    cy: 73.5,
+    size: 5
   },
   {
     id: 4,
+    code: "P4",
     name: "Douille 1",
-    x: 540,
-    y: 780
+    category: "Balistique",
+    cx: 32.5,
+    cy: 87.5,
+    size: 3
   },
   {
     id: 5,
+    code: "P5",
     name: "Douille 2",
-    x: 120,
-    y: 640
+    category: "Balistique",
+    cx: 6.5,
+    cy: 70,
+    size: 3.2
   }
 ];
 const state = {
@@ -90,11 +89,13 @@ function renderEvidence() {
     const hotspot = document.createElement("div");
     hotspot.className = "evidence-hotspot";
 
-    hotspot.style.left = item.x + "px";
-    hotspot.style.top = item.y + "px";
+    hotspot.style.left = item.cx + "%";
+    hotspot.style.top = item.cy + "%";
+    hotspot.style.width = item.size + "%";
+    hotspot.style.height = item.size + "%";
 
     hotspot.addEventListener("click", () => {
-      alert("Preuve : " + item.name);
+      collectEvidence(item.id);
     });
 
     evidenceLayer.appendChild(hotspot);
