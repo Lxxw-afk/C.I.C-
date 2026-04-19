@@ -1,12 +1,14 @@
 const evidenceData = [
   {
     id: 1,
-    name: "Trace de sang - victime",
-    className: "evidence-blood",
+    code: "P1",
+    name: "Sang de la victime",
     category: "Biologique",
-    description: "Petite trace sombre près du corps.",
-    x: 57.2,
-    y: 69.8,
+    description: "Trace de sang appartenant à la victime.",
+    x: 45.2,
+    y: 52.5,
+    w: 3.2,
+    h: 6.2,
     bloodProfile: {
       fullName: "Lucas Martin",
       birthDate: "12/08/1997",
@@ -18,45 +20,14 @@ const evidenceData = [
   },
   {
     id: 2,
-    name: "Douille dissimulée",
-    className: "evidence-casing",
-    category: "Balistique",
-    description: "Douille presque cachée près de la table basse.",
-    x: 38.4,
-    y: 61.5,
-    ballisticsProfile: {
-      ammoType: "9mm",
-      weaponType: "Pistol",
-      serialNumber: "KX-9941-17"
-    }
-  },
-  {
-    id: 3,
-    name: "Arme à feu",
-    className: "evidence-gun",
-    category: "Arme à feu",
-    description: "Pistolet retrouvé au sol proche de la victime.",
-    x: 56.2,
-    y: 77.2,
-    ballisticsProfile: {
-      ammoType: "9mm",
-      weaponType: "Pistol",
-      serialNumber: "KX-9941-17"
-    }
-  },
-  {
-    id: 4,
+    code: "P2",
     name: "Balle ensanglantée",
-    className: "evidence-bloody-bullet",
     category: "Projectile",
-    description: "Projectile retrouvé avec le sang d'une autre personne.",
-    x: 66.8,
-    y: 68.4,
-    ballisticsProfile: {
-      ammoType: "9mm",
-      weaponType: "Pistol",
-      serialNumber: "KX-9941-17"
-    },
+    description: "Projectile tiré par l'auteur en fuite, avec le sang d'une autre personne.",
+    x: 72.2,
+    y: 76.4,
+    w: 3.8,
+    h: 5.5,
     bloodProfile: {
       fullName: "Sarah Moreau",
       birthDate: "03/11/1994",
@@ -64,32 +35,59 @@ const evidenceData = [
       bloodGroup: "O-",
       country: "France",
       fingerprint: "9912457800341187"
+    },
+    ballisticsProfile: {
+      ammoType: "9mm",
+      weaponType: "Pistol",
+      serialNumber: "FT-8821-09"
+    }
+  },
+  {
+    id: 3,
+    code: "P3",
+    name: "Arme de la victime",
+    category: "Arme à feu",
+    description: "Arme appartenant à la victime.",
+    x: 48.5,
+    y: 72.3,
+    w: 5.8,
+    h: 8.5,
+    ballisticsProfile: {
+      ammoType: "9mm",
+      weaponType: "Pistol",
+      serialNumber: "LM-1208-97"
+    }
+  },
+  {
+    id: 4,
+    code: "P4",
+    name: "Douille 1",
+    category: "Balistique",
+    description: "Douille tirée par le second tireur en fuite.",
+    x: 30.8,
+    y: 84.2,
+    w: 2.8,
+    h: 4.8,
+    ballisticsProfile: {
+      ammoType: "9mm",
+      weaponType: "Pistol",
+      serialNumber: "FT-8821-09"
     }
   },
   {
     id: 5,
-    name: "Téléphone cassé",
-    className: "evidence-phone",
-    category: "Numérique",
-    description: "Téléphone tombé à côté du corps.",
-    x: 73.4,
-    y: 63.6
-  },
-  {
-    id: 6,
-    name: "Petit couteau taché",
-    className: "evidence-knife",
-    category: "Arme blanche",
-    description: "Lame fine difficile à distinguer près du canapé gauche.",
-    x: 27.6,
-    y: 66.4,
-    bloodProfile: {
-      fullName: "Inconnu",
-      birthDate: "Non identifié",
-      sex: "Inconnu",
-      bloodGroup: "AB-",
-      country: "Inconnu",
-      fingerprint: "Non disponible"
+    code: "P5",
+    name: "Douille 2",
+    category: "Balistique",
+    description: "Seconde douille tirée par le second tireur en fuite.",
+    x: 6.8,
+    y: 67.2,
+    w: 3.0,
+    h: 5.0,
+    ballisticsProfile: {
+      ammoType: "9mm",
+      weaponType: "Pistol",
+      serialNumber: "FT-8821-09"
     }
   }
 ];
@@ -121,23 +119,6 @@ const bloodTestBtn = document.getElementById("bloodTestBtn");
 const ballisticsBtn = document.getElementById("ballisticsBtn");
 const resetBtn = document.getElementById("resetBtn");
 
-const analysisVisual = document.getElementById("analysisVisual");
-const analysisTemplateImage = document.getElementById("analysisTemplateImage");
-const bloodOverlay = document.getElementById("bloodOverlay");
-const ballisticsOverlay = document.getElementById("ballisticsOverlay");
-
-const bloodNameValue = document.getElementById("bloodNameValue");
-const bloodNameSecondaryValue = document.getElementById("bloodNameSecondaryValue");
-const bloodDobValue = document.getElementById("bloodDobValue");
-const bloodSexValue = document.getElementById("bloodSexValue");
-const bloodGroupValue = document.getElementById("bloodGroupValue");
-const bloodCountryValue = document.getElementById("bloodCountryValue");
-const bloodFingerprintValue = document.getElementById("bloodFingerprintValue");
-
-const ammoTypeValue = document.getElementById("ammoTypeValue");
-const weaponTypeValue = document.getElementById("weaponTypeValue");
-const weaponSerialValue = document.getElementById("weaponSerialValue");
-
 function init() {
   totalCount.textContent = evidenceData.length;
   renderEvidence();
@@ -152,21 +133,23 @@ function renderEvidence() {
   evidenceLayer.innerHTML = "";
 
   evidenceData.forEach((item) => {
-    const evidence = document.createElement("div");
-    evidence.className = `evidence ${item.className}`;
+    const hotspot = document.createElement("button");
+    hotspot.className = "evidence-hotspot";
 
     if (state.foundEvidenceIds.includes(item.id)) {
-      evidence.classList.add("found");
+      hotspot.classList.add("found");
     }
 
-    evidence.style.left = `${item.x}%`;
-    evidence.style.top = `${item.y}%`;
-    evidence.title = state.foundEvidenceIds.includes(item.id)
+    hotspot.style.left = `${item.x}%`;
+    hotspot.style.top = `${item.y}%`;
+    hotspot.style.width = `${item.w}%`;
+    hotspot.style.height = `${item.h}%`;
+    hotspot.title = state.foundEvidenceIds.includes(item.id)
       ? `${item.name} collecté`
-      : "Indice discret";
+      : item.name;
 
-    evidence.addEventListener("click", () => collectEvidence(item.id));
-    evidenceLayer.appendChild(evidence);
+    hotspot.addEventListener("click", () => collectEvidence(item.id));
+    evidenceLayer.appendChild(hotspot);
   });
 }
 
@@ -213,7 +196,7 @@ function renderInventory() {
     card.innerHTML = `
       <div class="inventory-header">
         <div>
-          <div class="inventory-name">${item.name}</div>
+          <div class="inventory-name">${item.code} • ${item.name}</div>
           <div class="inventory-desc">${item.description}</div>
         </div>
         <div class="badge">${item.category}</div>
@@ -227,7 +210,6 @@ function renderInventory() {
       state.selectedEvidenceId = item.id;
       renderProofList();
       updateTabletSelection();
-      hideAnalysisVisual();
       setResult(`Preuve sélectionnée : ${item.name}\nAppuie sur T pour ouvrir la tablette.`);
       addLog(`Preuve sélectionnée : ${item.name}.`);
     });
@@ -256,13 +238,12 @@ function renderProofList() {
       btn.classList.add("active");
     }
 
-    btn.innerHTML = `${item.name}<small>${item.category}</small>`;
+    btn.innerHTML = `${item.code} • ${item.name}<small>${item.category}</small>`;
 
     btn.addEventListener("click", () => {
       state.selectedEvidenceId = item.id;
       renderProofList();
       updateTabletSelection();
-      hideAnalysisVisual();
       addLog(`Tablette : preuve sélectionnée ${item.name}.`);
     });
 
@@ -280,7 +261,7 @@ function updateTabletSelection() {
     return;
   }
 
-  tabletSelectedTitle.textContent = selected.name;
+  tabletSelectedTitle.textContent = `${selected.code} • ${selected.name}`;
   tabletSelectedMeta.textContent = `${selected.category} • ${selected.description}`;
 }
 
@@ -289,7 +270,6 @@ function runAnalysis(type) {
 
   if (!selected) {
     tabletOutput.textContent = "Aucune preuve sélectionnée.";
-    hideAnalysisVisual();
     return;
   }
 
@@ -299,25 +279,23 @@ function runAnalysis(type) {
   if (type === "blood") {
     if (!selected.bloodProfile) {
       tabletOutput.textContent = "Cette preuve ne contient pas de données sanguines.";
-      hideAnalysisVisual();
       setResult(tabletOutput.textContent);
       addLog(`Analyse sanguine impossible sur ${selected.name}.`);
       return;
     }
 
-    const profile = selected.bloodProfile;
-
+    const p = selected.bloodProfile;
     tabletOutput.textContent =
       `Résultat - Analyse sanguine\n\n` +
-      `Nom : ${profile.fullName || "-"}\n` +
-      `Date de naissance : ${profile.birthDate || "-"}\n` +
-      `Sexe : ${profile.sex || "-"}\n` +
-      `Groupe sanguin : ${profile.bloodGroup || "-"}\n` +
-      `Pays : ${profile.country || "-"}\n` +
-      `Empreinte digitale : ${profile.fingerprint || "-"}`;
+      `Preuve : ${selected.code} • ${selected.name}\n` +
+      `Nom : ${p.fullName}\n` +
+      `Date de naissance : ${p.birthDate}\n` +
+      `Sexe : ${p.sex}\n` +
+      `Groupe sanguin : ${p.bloodGroup}\n` +
+      `Pays : ${p.country}\n` +
+      `Empreinte digitale : ${p.fingerprint}`;
 
     setResult(tabletOutput.textContent);
-    showBloodAnalysis(profile);
     addLog(`Analyse sanguine sur ${selected.name}.`);
     return;
   }
@@ -325,57 +303,22 @@ function runAnalysis(type) {
   if (type === "ballistics") {
     if (!selected.ballisticsProfile) {
       tabletOutput.textContent = "Cette preuve ne contient pas de données balistiques.";
-      hideAnalysisVisual();
       setResult(tabletOutput.textContent);
       addLog(`Analyse balistique impossible sur ${selected.name}.`);
       return;
     }
 
-    const profile = selected.ballisticsProfile;
-
+    const p = selected.ballisticsProfile;
     tabletOutput.textContent =
       `Résultat - Analyse balistique\n\n` +
-      `Type de munitions : ${profile.ammoType || "-"}\n` +
-      `Arme utilisée : ${profile.weaponType || "-"}\n` +
-      `Numéro de série de l'arme : ${profile.serialNumber || "-"}`;
+      `Preuve : ${selected.code} • ${selected.name}\n` +
+      `Type de munitions : ${p.ammoType}\n` +
+      `Arme utilisée : ${p.weaponType}\n` +
+      `Numéro de série de l'arme : ${p.serialNumber}`;
 
     setResult(tabletOutput.textContent);
-    showBallisticsAnalysis(profile);
     addLog(`Analyse balistique sur ${selected.name}.`);
   }
-}
-
-function showBloodAnalysis(profile) {
-  analysisVisual.classList.remove("hidden");
-  bloodOverlay.classList.remove("hidden");
-  ballisticsOverlay.classList.add("hidden");
-  analysisTemplateImage.src = "images/sang-ui.png";
-
-  bloodNameValue.textContent = profile.fullName || "-";
-  bloodNameSecondaryValue.textContent = profile.fullName || "-";
-  bloodDobValue.textContent = profile.birthDate || "-";
-  bloodSexValue.textContent = profile.sex || "-";
-  bloodGroupValue.textContent = profile.bloodGroup || "-";
-  bloodCountryValue.textContent = profile.country || "-";
-  bloodFingerprintValue.textContent = profile.fingerprint || "-";
-}
-
-function showBallisticsAnalysis(profile) {
-  analysisVisual.classList.remove("hidden");
-  ballisticsOverlay.classList.remove("hidden");
-  bloodOverlay.classList.add("hidden");
-  analysisTemplateImage.src = "images/douille-ui.png";
-
-  ammoTypeValue.textContent = profile.ammoType || "-";
-  weaponTypeValue.textContent = profile.weaponType || "-";
-  weaponSerialValue.textContent = profile.serialNumber || "-";
-}
-
-function hideAnalysisVisual() {
-  analysisVisual.classList.add("hidden");
-  bloodOverlay.classList.add("hidden");
-  ballisticsOverlay.classList.add("hidden");
-  analysisTemplateImage.src = "";
 }
 
 function toggleTablet(force) {
@@ -400,7 +343,6 @@ function resetAll() {
   tabletOverlay.classList.remove("open");
   journal.innerHTML = "";
   tabletOutput.textContent = "Résultat en attente...";
-  hideAnalysisVisual();
 
   renderEvidence();
   renderInventory();
