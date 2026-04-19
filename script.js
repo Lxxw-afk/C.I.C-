@@ -5,9 +5,9 @@ const evidenceData = [
     name: "Sang victime",
     category: "Biologique",
     description: "Trace de sang appartenant à la victime.",
-    x: 1317,
-    y: 760,
-    r: 55,
+    x: 1138,
+    y: 724,
+    r: 34,
     bloodProfile: {
       fullName: "Lucas Martin",
       birthDate: "12/08/1997",
@@ -23,9 +23,9 @@ const evidenceData = [
     name: "Balle ensanglantée",
     category: "Projectile",
     description: "Projectile tiré par l'auteur en fuite, avec le sang d'une autre personne.",
-    x: 1750,
-    y: 921,
-    r: 52,
+    x: 1638,
+    y: 900,
+    r: 42,
     bloodProfile: {
       fullName: "Sarah Moreau",
       birthDate: "03/11/1994",
@@ -46,9 +46,9 @@ const evidenceData = [
     name: "Arme de la victime",
     category: "Arme à feu",
     description: "Arme appartenant à la victime.",
-    x: 1173,
-    y: 892,
-    r: 72,
+    x: 1042,
+    y: 846,
+    r: 56,
     ballisticsProfile: {
       ammoType: "9mm",
       weaponType: "Pistol",
@@ -61,9 +61,9 @@ const evidenceData = [
     name: "Douille 1",
     category: "Balistique",
     description: "Douille tirée par le second tireur en fuite.",
-    x: 684,
-    y: 1036,
-    r: 38,
+    x: 612,
+    y: 968,
+    r: 24,
     ballisticsProfile: {
       ammoType: "9mm",
       weaponType: "Pistol",
@@ -76,9 +76,9 @@ const evidenceData = [
     name: "Douille 2",
     category: "Balistique",
     description: "Seconde douille tirée par le second tireur en fuite.",
-    x: 233,
-    y: 816,
-    r: 38,
+    x: 304,
+    y: 754,
+    r: 24,
     ballisticsProfile: {
       ammoType: "9mm",
       weaponType: "Pistol",
@@ -86,7 +86,6 @@ const evidenceData = [
     }
   }
 ];
-
 const state = {
   foundEvidenceIds: [],
   selectedEvidenceId: null,
