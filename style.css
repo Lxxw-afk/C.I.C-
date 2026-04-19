@@ -171,7 +171,8 @@ body {
   border-radius: 50%;
   cursor: pointer;
   background: rgba(255,255,255,0.001);
-  transition: box-shadow 0.15s ease, transform 0.15s ease, opacity 0.2s ease;
+  transform: translate(-50%, -50%);
+  transition: box-shadow 0.15s ease, opacity 0.2s ease;
 }
 
 .evidence-hotspot:hover {
