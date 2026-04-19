@@ -176,7 +176,6 @@ body {
 
 .evidence-hotspot:hover {
   box-shadow: 0 0 0 2px rgba(255, 216, 106, 0.45);
-  transform: scale(1.03);
 }
 
 .evidence-hotspot.found {
