@@ -2,7 +2,7 @@ const evidenceData = [
   {
     id: 1,
     code: "P1",
-    name: "Sang de la victime",
+    name: "Sang de la victime.",
     category: "Biologique",
     description: "Trace de sang appartenant à la victime.",
     x: 47.6,
