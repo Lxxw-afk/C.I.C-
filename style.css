@@ -102,17 +102,7 @@ body {
   overflow: hidden;
   border: 1px solid rgba(255,255,255,0.08);
   box-shadow: 0 20px 60px rgba(0,0,0,0.45);
-  background: #111;
-}
-
-.scene-image {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  z-index: 1;
-  pointer-events: none;
+  background: #111 url("images/fond-scene.png") center / cover no-repeat;
 }
 
 .scene-darken,
@@ -144,27 +134,27 @@ body {
   inset: 0;
   width: 100%;
   height: 100%;
-  z-index: 999;
+  z-index: 20;
   pointer-events: auto;
-  background: rgba(0, 255, 0, 0.12);
 }
 
 .evidence-node {
-  fill: rgba(255, 0, 0, 0.6) !important;
-  stroke: white !important;
-  stroke-width: 4 !important;
-  pointer-events: all;
+  fill: rgba(255, 0, 0, 0.35);
+  stroke: red;
+  stroke-width: 2;
   cursor: pointer;
+  pointer-events: all;
 }
 
 .evidence-node:hover {
-  fill: rgba(255, 255, 0, 0.8) !important;
+  fill: rgba(255, 255, 0, 0.5);
 }
 
 .evidence-node.found {
-  opacity: 1 !important;
-  pointer-events: all !important;
+  opacity: 0;
+  pointer-events: none;
 }
+
 .room-label {
   position: absolute;
   top: 16px;
