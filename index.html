@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Scène de crime - Salon</title>
+  <title>Scène de crime - Enquête</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -12,7 +12,7 @@
       <header class="topbar">
         <div>
           <h1>Scène de crime - Salon</h1>
-          <p>Fouille la scène, récupère les preuves, puis ouvre la tablette avec <strong>T</strong>.</p>
+          <p>Clique sur les preuves dans l’image pour les récupérer. Ouvre la tablette avec <strong>T</strong>.</p>
         </div>
 
         <div class="topbar-actions">
@@ -27,13 +27,8 @@
           <div class="scene-vignette"></div>
           <div class="scene-light"></div>
 
-          <img src="images/mort.png" alt="Corps" class="body-image" />
-
-          <div class="blood-pool blood-main"></div>
-          <div class="blood-pool blood-side"></div>
-
           <div class="room-label">Salon principal</div>
-          <div class="scene-hint">Les indices sont cachés dans le décor.</div>
+          <div class="scene-hint">Clique sur les zones de preuves.</div>
 
           <div class="evidence-layer" id="evidenceLayer"></div>
         </div>
@@ -106,44 +101,6 @@
 
           <div class="analysis-output" id="tabletOutput">
             Résultat en attente...
-          </div>
-
-          <div class="analysis-visual hidden" id="analysisVisual">
-            <img id="analysisTemplateImage" src="" alt="Analyse" class="analysis-template-image" />
-
-            <!-- Analyse sang -->
-            <div id="bloodOverlay" class="analysis-overlay hidden">
-              <!-- Masques pour cacher les anciennes infos intégrées dans l'image -->
-              <div class="mask blood-mask-name"></div>
-              <div class="mask blood-mask-dob"></div>
-              <div class="mask blood-mask-sex"></div>
-              <div class="mask blood-mask-group"></div>
-              <div class="mask blood-mask-country"></div>
-              <div class="mask blood-mask-fingerprint"></div>
-              <div class="mask blood-mask-name-secondary"></div>
-
-              <!-- Valeurs dynamiques -->
-              <div class="field blood-name-value" id="bloodNameValue">-</div>
-              <div class="field blood-dob-value" id="bloodDobValue">-</div>
-              <div class="field blood-sex-value" id="bloodSexValue">-</div>
-              <div class="field blood-group-value" id="bloodGroupValue">-</div>
-              <div class="field blood-country-value" id="bloodCountryValue">-</div>
-              <div class="field blood-fingerprint-value" id="bloodFingerprintValue">-</div>
-
-              <!-- Valeur répétée sous le nom, pour remplacer aussi le texte au centre droit -->
-              <div class="field blood-name-secondary-value" id="bloodNameSecondaryValue">-</div>
-            </div>
-
-            <!-- Analyse balistique -->
-            <div id="ballisticsOverlay" class="analysis-overlay hidden">
-              <div class="mask ballistics-mask-ammo"></div>
-              <div class="mask ballistics-mask-weapon"></div>
-              <div class="mask ballistics-mask-serial"></div>
-
-              <div class="field ammo-type-value" id="ammoTypeValue">-</div>
-              <div class="field weapon-type-value" id="weaponTypeValue">-</div>
-              <div class="field weapon-serial-value" id="weaponSerialValue">-</div>
-            </div>
           </div>
         </div>
       </div>
