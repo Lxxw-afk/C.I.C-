@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Scène de crime - Enquête</title>
+  <title>Scène de crime - Salon</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -11,8 +11,8 @@
     <main class="main-area">
       <header class="topbar">
         <div>
-          <h1>Scène de crime - Appartement 3B.</h1>
-          <p>Fouille la scène, récupère les preuves, puis ouvre la tablette avec <strong>T</strong>.</p>
+          <h1>Scène de crime - Salon</h1>
+          <p>Fouille la pièce, récupère les preuves, puis ouvre la tablette avec <strong>T</strong>.</p>
         </div>
 
         <div class="topbar-actions">
@@ -23,26 +23,17 @@
 
       <section class="scene-wrapper">
         <div class="scene" id="scene">
-          <div class="scene-overlay"></div>
-          <div class="light-beam"></div>
+          <div class="scene-darken"></div>
+          <div class="scene-vignette"></div>
+          <div class="scene-light"></div>
 
-          <div class="crime-body"></div>
-          <div class="blood-pool large"></div>
-          <div class="blood-pool small"></div>
+          <img src="images/mort.png" alt="Corps" class="body-image" />
 
-          <div class="desk"></div>
-          <div class="sofa"></div>
-          <div class="cabinet"></div>
-          <div class="coffee-table"></div>
-          <div class="lamp"></div>
-          <div class="window-glow"></div>
+          <div class="blood-pool blood-main"></div>
+          <div class="blood-pool blood-side"></div>
 
-          <div class="room-label label-left">Salon</div>
-          <div class="room-label label-right">Coin bureau</div>
-
-          <div class="scene-hint">
-            Les indices sont volontairement difficiles à voir.
-          </div>
+          <div class="room-label">Salon principal</div>
+          <div class="scene-hint">Les indices sont cachés dans le décor.</div>
 
           <div class="evidence-layer" id="evidenceLayer"></div>
         </div>
@@ -98,7 +89,7 @@
       <div class="tablet-layout">
         <div class="tablet-left">
           <h2>Tablette médico-légale</h2>
-          <p class="tablet-subtitle">Choisis une preuve collectée.</p>
+          <p class="tablet-subtitle">Sélectionne une preuve collectée.</p>
           <div class="proof-list" id="proofList"></div>
         </div>
 
@@ -116,6 +107,41 @@
           <div class="analysis-output" id="tabletOutput">
             Résultat en attente...
           </div>
+
+          <div class="analysis-visual hidden" id="analysisVisual">
+            <img id="analysisTemplateImage" src="" alt="Analyse" class="analysis-template-image" />
+
+            <div id="bloodOverlay" class="analysis-overlay hidden">
+              <div class="field blood-name-label">Nom</div>
+              <div class="field blood-name-value" id="bloodNameValue">-</div>
+
+              <div class="field blood-dob-label">Date de naissance</div>
+              <div class="field blood-dob-value" id="bloodDobValue">-</div>
+
+              <div class="field blood-sex-label">Sexe</div>
+              <div class="field blood-sex-value" id="bloodSexValue">-</div>
+
+              <div class="field blood-group-label">Groupe sanguin</div>
+              <div class="field blood-group-value" id="bloodGroupValue">-</div>
+
+              <div class="field blood-country-label">Pays</div>
+              <div class="field blood-country-value" id="bloodCountryValue">-</div>
+
+              <div class="field blood-fingerprint-label">Empreinte digitale</div>
+              <div class="field blood-fingerprint-value" id="bloodFingerprintValue">-</div>
+            </div>
+
+            <div id="ballisticsOverlay" class="analysis-overlay hidden">
+              <div class="field ammo-type-label">Type de munitions</div>
+              <div class="field ammo-type-value" id="ammoTypeValue">-</div>
+
+              <div class="field weapon-type-label">Arme utilisée</div>
+              <div class="field weapon-type-value" id="weaponTypeValue">-</div>
+
+              <div class="field weapon-serial-label">Numéro de série de l'arme</div>
+              <div class="field weapon-serial-value" id="weaponSerialValue">-</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -124,4 +150,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-
