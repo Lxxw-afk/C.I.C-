@@ -148,22 +148,21 @@ body {
 }
 
 .evidence-node {
-  fill: rgba(255, 216, 106, 0.18);
-  stroke: rgba(255, 216, 106, 0.95);
-  stroke-width: 3;
+  fill: rgba(255, 255, 255, 0.001);
+  stroke: transparent;
+  stroke-width: 0;
   cursor: pointer;
-  transition: fill 0.15s ease, opacity 0.2s ease;
 }
 
 .evidence-node:hover {
-  fill: rgba(255, 216, 106, 0.32);
+  fill: rgba(255, 255, 255, 0.001);
+  stroke: transparent;
 }
 
 .evidence-node.found {
   opacity: 0;
   pointer-events: none;
 }
-
 .room-label {
   position: absolute;
   top: 16px;
