@@ -5,7 +5,7 @@ const evidenceData = [
     name: "Sang victime",
     category: "Biologique",
     description: "Trace de sang appartenant à la victime.",
-    x: 1205, // 👉 déplacé à droite
+    x: 1205,
     y: 760,
     r: 28,
     bloodProfile: {
@@ -24,7 +24,7 @@ const evidenceData = [
     category: "Projectile",
     description: "Projectile tiré par l'auteur en fuite.",
     x: 1635,
-    y: 990, // 👉 descendue
+    y: 990,
     r: 36,
     bloodProfile: {
       fullName: "Sarah Moreau",
@@ -46,9 +46,9 @@ const evidenceData = [
     name: "Arme de la victime",
     category: "Arme à feu",
     description: "Arme appartenant à la victime.",
-    x: 1210, // 👉 légèrement recentré
-    y: 930,
-    r: 44,
+    x: 1265,
+    y: 940,
+    r: 42,
     ballisticsProfile: {
       ammoType: "9mm",
       weaponType: "Pistol",
@@ -61,8 +61,8 @@ const evidenceData = [
     name: "Douille 1",
     category: "Balistique",
     description: "Douille tirée par le tireur en fuite.",
-    x: 760, // 👉 recalée (sous jambe)
-    y: 1000,
+    x: 760,
+    y: 1010,
     r: 20,
     ballisticsProfile: {
       ammoType: "9mm",
@@ -76,8 +76,8 @@ const evidenceData = [
     name: "Douille 2",
     category: "Balistique",
     description: "Seconde douille tirée par le tireur.",
-    x: 360, // 👉 recalée (près canapé)
-    y: 800,
+    x: 360,
+    y: 805,
     r: 22,
     ballisticsProfile: {
       ammoType: "9mm",
