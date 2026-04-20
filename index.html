@@ -35,7 +35,7 @@
           ></svg>
 
           <div class="room-label">Salon principal</div>
-          <div class="scene-hint">Clique sur les zones de preuves.</div>
+          <div class="scene-hint">Clique sur les preuves pour les récupérer.</div>
         </div>
       </section>
     </main>
@@ -99,13 +99,14 @@
             Collecte une preuve pour commencer.
           </p>
 
-          <div class="analysis-actions">
-            <button class="btn primary" id="bloodTestBtn">Analyse sanguine</button>
-            <button class="btn secondary" id="ballisticsBtn">Analyse balistique</button>
+          <div class="tab-bar">
+            <button class="tab-btn active" data-tab="adn">ADN</button>
+            <button class="tab-btn" data-tab="balistique">Balistique</button>
+            <button class="tab-btn" data-tab="comparaison">Comparaison</button>
           </div>
 
           <div class="analysis-output" id="tabletOutput">
-            Résultat en attente...
+            Sélectionne une preuve, puis choisis un onglet.
           </div>
         </div>
       </div>
