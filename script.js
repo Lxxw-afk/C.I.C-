@@ -46,8 +46,8 @@ const evidenceData = [
     name: "Arme de la victime",
     category: "Arme à feu",
     description: "Arme appartenant à la victime.",
-    x: 1265,
-    y: 940,
+    x: 1255,
+    y: 935,
     r: 42,
     ballisticsProfile: {
       ammoType: "9mm",
@@ -62,7 +62,7 @@ const evidenceData = [
     category: "Balistique",
     description: "Douille tirée par le tireur en fuite.",
     x: 760,
-    y: 1010,
+    y: 1000,
     r: 20,
     ballisticsProfile: {
       ammoType: "9mm",
@@ -77,7 +77,7 @@ const evidenceData = [
     category: "Balistique",
     description: "Seconde douille tirée par le tireur.",
     x: 360,
-    y: 805,
+    y: 795,
     r: 22,
     ballisticsProfile: {
       ammoType: "9mm",
