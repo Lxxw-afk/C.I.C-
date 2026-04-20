@@ -403,3 +403,12 @@ tabletOverlay.addEventListener("click", (event) => {
 });
 
 init();
+sceneSvg.addEventListener("click", (e) => {
+  const pt = sceneSvg.createSVGPoint();
+  pt.x = e.clientX;
+  pt.y = e.clientY;
+
+  const p = pt.matrixTransform(sceneSvg.getScreenCTM().inverse());
+
+  console.log("X:", Math.round(p.x), "Y:", Math.round(p.y));
+});
