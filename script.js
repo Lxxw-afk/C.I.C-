@@ -86,11 +86,13 @@ const evidenceData = [
     }
   }
 ];
+
 const state = {
   foundEvidenceIds: [],
   selectedEvidenceId: null,
   analysisCount: 0,
-  tabletOpen: false
+  tabletOpen: false,
+  currentTab: "adn"
 };
 
 const sceneSvg = document.getElementById("sceneSvg");
@@ -109,9 +111,8 @@ const proofList = document.getElementById("proofList");
 const tabletSelectedTitle = document.getElementById("tabletSelectedTitle");
 const tabletSelectedMeta = document.getElementById("tabletSelectedMeta");
 const tabletOutput = document.getElementById("tabletOutput");
-const bloodTestBtn = document.getElementById("bloodTestBtn");
-const ballisticsBtn = document.getElementById("ballisticsBtn");
 const resetBtn = document.getElementById("resetBtn");
+const tabButtons = document.querySelectorAll(".tab-btn");
 
 function init() {
   totalCount.textContent = evidenceData.length;
@@ -120,6 +121,7 @@ function init() {
   renderProofList();
   updateTabletSelection();
   updateStats();
+  renderCurrentTab();
   addLog("Système lancé. Début de la fouille de la scène.");
 }
 
@@ -166,9 +168,10 @@ function collectEvidence(id) {
   renderProofList();
   updateTabletSelection();
   updateStats();
+  renderCurrentTab();
 
   setResult(
-    `Preuve récupérée : ${item.name}\n${item.description}\n\nOuvre la tablette avec T pour lancer une analyse.`
+    `Preuve récupérée : ${item.name}\n${item.description}\n\nOuvre la tablette avec T pour consulter les onglets ADN, Balistique et Comparaison.`
   );
 
   addLog(`Preuve récupérée : ${item.name}.`);
@@ -207,7 +210,8 @@ function renderInventory() {
       state.selectedEvidenceId = item.id;
       renderProofList();
       updateTabletSelection();
-      setResult(`Preuve sélectionnée : ${item.name}\nAppuie sur T pour ouvrir la tablette.`);
+      renderCurrentTab();
+      setResult(`Preuve sélectionnée : ${item.name}\nConsulte maintenant les onglets de la tablette.`);
       addLog(`Preuve sélectionnée : ${item.name}.`);
     });
 
@@ -241,6 +245,7 @@ function renderProofList() {
       state.selectedEvidenceId = item.id;
       renderProofList();
       updateTabletSelection();
+      renderCurrentTab();
       addLog(`Tablette : preuve sélectionnée ${item.name}.`);
     });
 
@@ -254,7 +259,6 @@ function updateTabletSelection() {
   if (!selected) {
     tabletSelectedTitle.textContent = "Aucune preuve sélectionnée";
     tabletSelectedMeta.textContent = "Collecte une preuve pour commencer.";
-    tabletOutput.textContent = "Résultat en attente...";
     return;
   }
 
@@ -262,60 +266,128 @@ function updateTabletSelection() {
   tabletSelectedMeta.textContent = `${selected.category} • ${selected.description}`;
 }
 
-function runAnalysis(type) {
+function renderCurrentTab() {
   const selected = getEvidenceById(state.selectedEvidenceId);
 
+  tabButtons.forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.tab === state.currentTab);
+  });
+
   if (!selected) {
-    tabletOutput.textContent = "Aucune preuve sélectionnée.";
+    tabletOutput.textContent = "Sélectionne une preuve, puis choisis un onglet.";
     return;
   }
 
   state.analysisCount += 1;
   updateStats();
 
-  if (type === "blood") {
-    if (!selected.bloodProfile) {
-      tabletOutput.textContent = "Cette preuve ne contient pas de données sanguines.";
-      setResult(tabletOutput.textContent);
-      addLog(`Analyse sanguine impossible sur ${selected.name}.`);
-      return;
-    }
-
-    const p = selected.bloodProfile;
-    tabletOutput.textContent =
-      `Résultat - Analyse sanguine\n\n` +
-      `Preuve : ${selected.code} • ${selected.name}\n` +
-      `Nom : ${p.fullName}\n` +
-      `Date de naissance : ${p.birthDate}\n` +
-      `Sexe : ${p.sex}\n` +
-      `Groupe sanguin : ${p.bloodGroup}\n` +
-      `Pays : ${p.country}\n` +
-      `Empreinte digitale : ${p.fingerprint}`;
-
-    setResult(tabletOutput.textContent);
-    addLog(`Analyse sanguine sur ${selected.name}.`);
+  if (state.currentTab === "adn") {
+    renderADNTab(selected);
     return;
   }
 
-  if (type === "ballistics") {
-    if (!selected.ballisticsProfile) {
-      tabletOutput.textContent = "Cette preuve ne contient pas de données balistiques.";
-      setResult(tabletOutput.textContent);
-      addLog(`Analyse balistique impossible sur ${selected.name}.`);
-      return;
-    }
-
-    const p = selected.ballisticsProfile;
-    tabletOutput.textContent =
-      `Résultat - Analyse balistique\n\n` +
-      `Preuve : ${selected.code} • ${selected.name}\n` +
-      `Type de munitions : ${p.ammoType}\n` +
-      `Arme utilisée : ${p.weaponType}\n` +
-      `Numéro de série de l'arme : ${p.serialNumber}`;
-
-    setResult(tabletOutput.textContent);
-    addLog(`Analyse balistique sur ${selected.name}.`);
+  if (state.currentTab === "balistique") {
+    renderBallisticsTab(selected);
+    return;
   }
+
+  if (state.currentTab === "comparaison") {
+    renderComparisonTab(selected);
+  }
+}
+
+function renderADNTab(selected) {
+  if (!selected.bloodProfile) {
+    tabletOutput.textContent =
+      `ONGLET ADN\n\n` +
+      `Preuve : ${selected.code} • ${selected.name}\n\n` +
+      `Aucune donnée biologique exploitable sur cette preuve.`;
+    return;
+  }
+
+  const p = selected.bloodProfile;
+  tabletOutput.textContent =
+    `ONGLET ADN\n\n` +
+    `Preuve : ${selected.code} • ${selected.name}\n` +
+    `Nom : ${p.fullName}\n` +
+    `Date de naissance : ${p.birthDate}\n` +
+    `Sexe : ${p.sex}\n` +
+    `Groupe sanguin : ${p.bloodGroup}\n` +
+    `Pays : ${p.country}\n` +
+    `Empreinte digitale : ${p.fingerprint}`;
+}
+
+function renderBallisticsTab(selected) {
+  if (!selected.ballisticsProfile) {
+    tabletOutput.textContent =
+      `ONGLET BALISTIQUE\n\n` +
+      `Preuve : ${selected.code} • ${selected.name}\n\n` +
+      `Aucune donnée balistique exploitable sur cette preuve.`;
+    return;
+  }
+
+  const p = selected.ballisticsProfile;
+  const linked = evidenceData
+    .filter(
+      (item) =>
+        item.id !== selected.id &&
+        item.ballisticsProfile &&
+        item.ballisticsProfile.serialNumber === p.serialNumber
+    )
+    .map((item) => `${item.code} • ${item.name}`);
+
+  tabletOutput.textContent =
+    `ONGLET BALISTIQUE\n\n` +
+    `Preuve : ${selected.code} • ${selected.name}\n` +
+    `Type de munitions : ${p.ammoType}\n` +
+    `Arme utilisée : ${p.weaponType}\n` +
+    `Numéro de série : ${p.serialNumber}\n\n` +
+    `Correspondances balistiques :\n` +
+    `${linked.length ? linked.join("\n") : "Aucune autre correspondance trouvée."}`;
+}
+
+function renderComparisonTab(selected) {
+  const lines = [];
+  lines.push(`ONGLET COMPARAISON`);
+  lines.push("");
+  lines.push(`Preuve : ${selected.code} • ${selected.name}`);
+  lines.push("");
+
+  if (selected.id === 1) {
+    lines.push("Analyse croisée :");
+    lines.push("- Le sang de la preuve P1 correspond à la victime.");
+    lines.push("- Il s'agit de la référence biologique principale de la scène.");
+  }
+
+  if (selected.id === 2) {
+    lines.push("Analyse croisée :");
+    lines.push("- La balle P2 contient le sang d'une autre personne.");
+    lines.push("- La munition de P2 correspond au même numéro de série que P4 et P5.");
+    lines.push("- Cela indique la présence d'un second individu armé.");
+  }
+
+  if (selected.id === 3) {
+    lines.push("Analyse croisée :");
+    lines.push("- L'arme P3 appartient à la victime.");
+    lines.push("- Son numéro de série est différent de celui lié à P2, P4 et P5.");
+    lines.push("- Il y a donc au moins deux armes impliquées sur la scène.");
+  }
+
+  if (selected.id === 4 || selected.id === 5) {
+    lines.push("Analyse croisée :");
+    lines.push("- Cette douille correspond au même numéro de série que P2.");
+    lines.push("- Elle n'est pas liée à l'arme de la victime (P3).");
+    lines.push("- Cela renforce l'hypothèse d'un tireur en fuite.");
+  }
+
+  lines.push("");
+  lines.push("Conclusion provisoire :");
+  lines.push("- Victime identifiée par le sang P1.");
+  lines.push("- Présence d'une seconde personne blessée via P2.");
+  lines.push("- Présence d'un second tireur confirmée par P2, P4 et P5.");
+  lines.push("- L'arme P3 ne correspond pas à ces douilles.");
+
+  tabletOutput.textContent = lines.join("\n");
 }
 
 function toggleTablet(force) {
@@ -327,6 +399,7 @@ function toggleTablet(force) {
   if (state.tabletOpen) {
     renderProofList();
     updateTabletSelection();
+    renderCurrentTab();
     addLog("Tablette ouverte.");
   }
 }
@@ -336,6 +409,7 @@ function resetAll() {
   state.selectedEvidenceId = null;
   state.analysisCount = 0;
   state.tabletOpen = false;
+  state.currentTab = "adn";
 
   tabletOverlay.classList.remove("open");
   journal.innerHTML = "";
@@ -346,6 +420,7 @@ function resetAll() {
   renderProofList();
   updateTabletSelection();
   updateStats();
+  renderCurrentTab();
 
   setResult("Récupère une preuve sur la scène, puis ouvre la tablette avec T.");
   addLog("Affaire réinitialisée.");
@@ -382,9 +457,14 @@ function getEvidenceById(id) {
 
 tabletToggleBtn.addEventListener("click", () => toggleTablet());
 closeTabletBtn.addEventListener("click", () => toggleTablet(false));
-bloodTestBtn.addEventListener("click", () => runAnalysis("blood"));
-ballisticsBtn.addEventListener("click", () => runAnalysis("ballistics"));
 resetBtn.addEventListener("click", resetAll);
+
+tabButtons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    state.currentTab = btn.dataset.tab;
+    renderCurrentTab();
+  });
+});
 
 document.addEventListener("keydown", (event) => {
   if (event.key.toLowerCase() === "t") {
