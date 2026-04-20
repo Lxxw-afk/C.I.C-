@@ -5,8 +5,8 @@ const evidenceData = [
     name: "Sang victime",
     category: "Biologique",
     description: "Trace de sang appartenant à la victime.",
-    x: 1205,
-    y: 760,
+    x: 1270,
+    y: 789,
     r: 28,
     bloodProfile: {
       fullName: "Lucas Martin",
@@ -46,8 +46,8 @@ const evidenceData = [
     name: "Arme de la victime",
     category: "Arme à feu",
     description: "Arme appartenant à la victime.",
-    x: 1255,
-    y: 935,
+    x: 1160,
+    y: 973,
     r: 42,
     ballisticsProfile: {
       ammoType: "9mm",
@@ -61,8 +61,8 @@ const evidenceData = [
     name: "Douille 1",
     category: "Balistique",
     description: "Douille tirée par le tireur en fuite.",
-    x: 760,
-    y: 1000,
+    x: 736,
+    y: 1133,
     r: 20,
     ballisticsProfile: {
       ammoType: "9mm",
@@ -76,8 +76,8 @@ const evidenceData = [
     name: "Douille 2",
     category: "Balistique",
     description: "Seconde douille tirée par le tireur.",
-    x: 360,
-    y: 795,
+    x: 363,
+    y: 850,
     r: 22,
     ballisticsProfile: {
       ammoType: "9mm",
@@ -403,12 +403,3 @@ tabletOverlay.addEventListener("click", (event) => {
 });
 
 init();
-sceneSvg.addEventListener("click", (e) => {
-  const pt = sceneSvg.createSVGPoint();
-  pt.x = e.clientX;
-  pt.y = e.clientY;
-
-  const p = pt.matrixTransform(sceneSvg.getScreenCTM().inverse());
-
-  console.log("X:", Math.round(p.x), "Y:", Math.round(p.y));
-});
