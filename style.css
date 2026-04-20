@@ -141,7 +141,7 @@ body {
 .evidence-node {
   fill: transparent;
   stroke: transparent;
-  stroke-width: 20; /* garde une zone cliquable large */
+  stroke-width: 20;
   cursor: pointer;
   pointer-events: all;
 }
@@ -293,7 +293,7 @@ body {
 .analysis-output {
   min-height: 120px;
   white-space: pre-line;
-  line-height: 1.5;
+  line-height: 1.55;
   color: #e2edf7;
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.06);
@@ -406,11 +406,26 @@ body {
   color: #a5b7c8;
 }
 
-.analysis-actions {
+.tab-bar {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
   margin-bottom: 14px;
+}
+
+.tab-btn {
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.tab-btn.active {
+  background: rgba(144, 211, 255, 0.18);
+  border-color: rgba(144, 211, 255, 0.35);
 }
 
 @media (max-width: 1200px) {
